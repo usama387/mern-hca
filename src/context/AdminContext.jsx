@@ -3,8 +3,10 @@ import { createContext, useState } from "react";
 export const AdminContext = createContext();
 
 const AdminContextProvider = (props) => {
-  // creating a state to save admin token
-  const [atoken, setAToken] = useState("");
+  // creating a state to save admin token withSetAToken in Login.jsx after that i can access it using atoken and AdminContext after that we get the aToken saved in localStorage to prevent Login Page render again on reload
+  const [atoken, setAToken] = useState(
+    localStorage.getItem("aToken") ? localStorage.getItem("aToken") : ""
+  );
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
