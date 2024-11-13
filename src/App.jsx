@@ -1,6 +1,9 @@
+import Login from "./pages/Login";
 
 const App = () => {
-  return <div className="text-emerald-500">App</div>;
+  return <div>
+    <Login />
+  </div>;
 };
 
 export default App;
