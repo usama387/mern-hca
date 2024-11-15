@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import axios from "axios";
-import toast from "react-toastify";
+import { toast } from "react-toastify";
 
 export const AdminContext = createContext();
 
@@ -21,11 +21,12 @@ const AdminContextProvider = (props) => {
       const { data } = await axios.post(
         backendUrl + "/api/admin/all-doctors",
         {},
-        { headers: atoken }
+        { headers: { atoken } }
       );
 
       if (data.success) {
-        setDoctors(data.doctors);
+        setDoctors(data.allDoctors);
+        console.log(data.allDoctors);
       } else {
         toast.error(data.message);
       }
