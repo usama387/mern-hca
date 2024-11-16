@@ -16,6 +16,7 @@ const AdminContextProvider = (props) => {
   // managing state for doctors data when api returns response doctors state is updated with the data
   const [doctors, setDoctors] = useState([]);
 
+  // async function that fetches all doctors sending a token in headers as admin
   const getAllDoctors = async () => {
     try {
       const { data } = await axios.post(
@@ -36,13 +37,36 @@ const AdminContextProvider = (props) => {
     }
   };
 
-  // this object contains data to be accessed anywhere in app and passing it as prop in provider
+  // function to change availability sending docId as parameter to api comes from DoctorsList page as item.id where they are mapped
+  const changeAvailability = async (docId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/change-availability",
+        { docId },
+        { headers: { atoken } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        // since availability has changed the doctors data will also be needed to change
+        getAllDoctors();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  // this object contains data and functions to be accessed anywhere in app and passing it as prop in provider
   const value = {
     atoken,
     setAToken,
     backendUrl,
     doctors,
     getAllDoctors,
+    changeAvailability,
   };
 
   return (
