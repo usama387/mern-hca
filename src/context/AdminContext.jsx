@@ -16,6 +16,9 @@ const AdminContextProvider = (props) => {
   // managing state for doctors data when api returns response doctors state is updated with the data
   const [doctors, setDoctors] = useState([]);
 
+  // managing state for doctors data when api returns response appointments state is updated with the data
+  const [appointments, setAppointments] = useState([]);
+
   // async function that fetches all doctors sending a token in headers as admin
   const getAllDoctors = async () => {
     try {
@@ -59,6 +62,46 @@ const AdminContextProvider = (props) => {
     }
   };
 
+  // async function with get method to fetch all appointments for admin
+  const getAllAppointments = async () => {
+    try {
+      const { data } = await axios.get(backendUrl + "/api/admin/appointments", {
+        headers: { atoken },
+      });
+
+      if (data.success) {
+        setAppointments(data.appointments);
+        console.log(data.appointments);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  // async function with post method to cancel an appointment as admin
+  const cancelAppointmentAsAdmin = async (appointmentId) => {
+    try {
+      const { data } = await axios.post(
+        backendUrl + "/api/admin/cancel-appointment",
+        { appointmentId },
+        { headers: { atoken } }
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        getAllAppointments();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   // this object contains data and functions to be accessed anywhere in app and passing it as prop in provider
   const value = {
     atoken,
@@ -67,6 +110,10 @@ const AdminContextProvider = (props) => {
     doctors,
     getAllDoctors,
     changeAvailability,
+    appointments,
+    setAppointments,
+    getAllAppointments,
+    cancelAppointmentAsAdmin,
   };
 
   return (
