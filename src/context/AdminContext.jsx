@@ -11,7 +11,7 @@ const AdminContextProvider = (props) => {
   );
 
   // backend url address
-  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://project-healthcare-backend.vercel.app";
 
   // managing state for doctors data when api returns response doctors state is updated with the data
   const [doctors, setDoctors] = useState([]);
